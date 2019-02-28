@@ -24,7 +24,11 @@ class Home extends React.Component {
     ) : (
       <React.Fragment>
         <Segment>
-          <RecipeList recipes={recipes} />
+          <RecipeList
+            recipes={recipes}
+            onDelete={this.handleDelete}
+            currentUser={this.props.currentUser}
+          />
         </Segment>
         <Segment>
           <LinkButton link="/recipes/new" size="huge" icon="add" />

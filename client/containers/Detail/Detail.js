@@ -7,6 +7,7 @@ import fetchRecipe from '../../queries/fetchRecipe';
 import DirectionCreateForm from '../../components/DirectionCreateForm';
 import DirectionList from '../../components/DirectionList';
 import LinkButton from '../../components/Buttons/LinkButton';
+import fetchCurrentUser from '../../queries/currentUser';
 
 const ADD_DIRECTION = gql`
   mutation AddDirectionToRecipe($content: String, $recipeId: ID) {
@@ -29,9 +30,21 @@ const LIKE_RECIPE = gql`
   }
 `;
 
-class RecipeDetail extends React.Component {
+const DELETE_DIRECTION = gql`
+  mutation DeleteDirection($id: ID) {
+    deleteDirection(id: $id) {
+      id
+    }
+  }
+`;
+
+class Detail extends React.Component {
+  checkUser = () =>
+    this.props.currentUser &&
+    this.props.currentUser.name === this.props.data.recipe.user.name;
+
   render() {
-    const { loading, recipe } = this.props.data;
+    const { loading, recipe, user } = this.props.data;
 
     return loading ? (
       <div>Loading...</div>
@@ -68,23 +81,39 @@ class RecipeDetail extends React.Component {
           </Header>
           <Header as="h2" floated="left">
             {recipe.title}
+            <Header.Subheader>by {recipe.user.name}</Header.Subheader>
             <Header.Subheader>{recipe.description}</Header.Subheader>
           </Header>
         </Segment>
 
         <Divider />
-        <DirectionList directions={recipe.directions} />
-        <Mutation mutation={ADD_DIRECTION}>
-          {addDirectionToRecipe => (
-            <DirectionCreateForm
-              onSubmit={content => {
-                addDirectionToRecipe({
-                  variables: { recipeId: recipe.id, content }
-                });
+        <Mutation mutation={DELETE_DIRECTION}>
+          {deleteDirection => (
+            <DirectionList
+              directions={recipe.directions}
+              author={this.checkUser()}
+              onDelete={id => {
+                deleteDirection({
+                  variables: { id }
+                }).then(() => this.props.data.refetch());
               }}
             />
           )}
         </Mutation>
+
+        {this.checkUser() ? (
+          <Mutation mutation={ADD_DIRECTION}>
+            {addDirectionToRecipe => (
+              <DirectionCreateForm
+                onSubmit={content => {
+                  addDirectionToRecipe({
+                    variables: { recipeId: recipe.id, content }
+                  });
+                }}
+              />
+            )}
+          </Mutation>
+        ) : null}
       </React.Fragment>
     );
   }
@@ -92,4 +121,4 @@ class RecipeDetail extends React.Component {
 
 export default graphql(fetchRecipe, {
   options: props => ({ variables: { id: props.match.params.id } })
-})(RecipeDetail);
+})(Detail);

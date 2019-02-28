@@ -15,10 +15,11 @@ const mutation = new GraphQLObjectType({
       type: RecipeType,
       args: {
         title: { type: GraphQLString },
+        user: { type: GraphQLID },
         description: { type: GraphQLString }
       },
-      resolve(parentValue, { title, description }) {
-        return new Recipe({ title, description }).save();
+      resolve(parentValue, { title, description, user }) {
+        return new Recipe({ title, description, user }).save();
       }
     },
     addDirectionToRecipe: {
@@ -29,6 +30,15 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parentValue, { content, recipeId }) {
         return Recipe.addDirection(recipeId, content);
+      }
+    },
+    deleteDirection: {
+      type: DirectionType,
+      args: {
+        id: { type: GraphQLID }
+      },
+      resolve(parentValue, { id }) {
+        return Direction.remove({ _id: id });
       }
     },
     likeRecipe: {

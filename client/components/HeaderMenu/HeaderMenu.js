@@ -19,11 +19,7 @@ class HeaderMenu extends React.Component {
       return (
         <React.Fragment>
           {`Welcome ${user.name}`}
-          <Button
-            as="a"
-            style={{ marginLeft: '10px' }}
-            onClick={this.handleLogout}
-          >
+          <Button style={{ marginLeft: '10px' }} onClick={this.handleLogout}>
             Logout
           </Button>
         </React.Fragment>

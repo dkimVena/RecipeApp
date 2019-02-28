@@ -10,11 +10,13 @@ import LinkButton from '../../components/Buttons/LinkButton';
 
 class RecipeCreate extends React.Component {
   handleSubmit = (title, description) => {
+    console.log(this.props);
     this.props
       .mutate({
         variables: {
           title,
-          description
+          description,
+          user: this.props.data.user.id
         },
         refetchQueries: [{ query }]
       })
@@ -22,6 +24,7 @@ class RecipeCreate extends React.Component {
   };
 
   render() {
+    console.log(this.props.data);
     return (
       <React.Fragment>
         <LinkButton link="/" size="huge" icon="arrow left" />
@@ -34,8 +37,8 @@ class RecipeCreate extends React.Component {
 }
 
 const mutation = gql`
-  mutation AddRecipe($title: String, $description: String) {
-    addRecipe(title: $title, description: $description) {
+  mutation AddRecipe($title: String, $description: String, $user: ID) {
+    addRecipe(title: $title, description: $description, user: $user) {
       id
       title
       description

@@ -1,8 +1,11 @@
 {
-  "name": "react-minimal-boilerplate",
+  "name": "Recipe App",
   "version": "1.0.0",
-  "description": "A simple react boilerplate with babel and webpack",
+  "description": "A simple App for Recipes",
   "main": "index.js",
+  "engines": {
+    "node": "10.2.1"
+  },
   "scripts": {
     "dev-server": "webpack-dev-server --config config/webpack.dev.js --hot",
     "start:dev": "nodemon server/index.js",
@@ -11,7 +14,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-postbuild": "npm run build"
   },
-  "author": "Kelly Barber",
+  "author": "INKOOG KIM",
   "license": "MIT",
   "dependencies": {
     "apollo-boost": "^0.1.28",

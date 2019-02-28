@@ -7,6 +7,10 @@ export default gql`
       title
       likes
       description
+      user {
+        id
+        name
+      }
     }
   }
 `;

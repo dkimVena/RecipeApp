@@ -12,6 +12,8 @@ import Create from './containers/Create';
 import Detail from './containers/Detail';
 import Login from './containers/Login';
 import Signup from './containers/Signup';
+import requireAuth from './components/requireAuth';
+import useCurrentUser from './components/useCurrentUser';
 
 const link = createHttpLink({
   uri: '/api/graphql',
@@ -32,9 +34,9 @@ const Root = () => {
       <HashRouter>
         <Layout>
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/recipes/new" component={Create} />
-            <Route path="/recipes/:id" component={Detail} />
+            <Route exact path="/" component={useCurrentUser(Home)} />
+            <Route path="/recipes/new" component={requireAuth(Create)} />
+            <Route path="/recipes/:id" component={useCurrentUser(Detail)} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={Signup} />
           </Switch>

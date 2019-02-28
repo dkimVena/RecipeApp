@@ -6,7 +6,7 @@ import { Icon } from 'semantic-ui-react';
 const LinkButton = ({ link, size, icon }) => {
   return (
     <Link to={link}>
-      <Icon size={size} name={icon} />
+      <Icon size={size} name={icon} color="teal" />
     </Link>
   );
 };
