@@ -1,5 +1,5 @@
 {
-  "name": "Recipe App",
+  "name": "gook-recipes",
   "version": "1.0.0",
   "description": "A simple App for Recipes",
   "main": "index.js",
